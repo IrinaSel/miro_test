@@ -7,7 +7,7 @@ Result query is stored in attribution model. This is an incremental model which 
 ## Comments:
 
 I assumed that staging tables are stored in marketing schema. 
-First I’ve looked into what mediums are in the conversion table.
+First I’ve looked into what mediums are in the sessions table.
 
 ```select distinct medium from marketing.sessions```
 
