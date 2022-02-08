@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: attribution
+    description: Incremental model with signup channel attribution. 
+    columns:
+      - name: user_id
+        tests:
+          - not_null
+          - unique
