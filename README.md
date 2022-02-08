@@ -3,11 +3,13 @@ Welcome to Miro test project made by Iryna S.!
 ## Solution
 Result query is stored in attribution model. This is an incremental model which will be builded using all data from the source models, but on subsequent runs it will use only the latest data.
 
+
 ## Comments:
 
+I assumed that staging tables are stored in marketing schema. 
 First I’ve looked into what mediums are in the conversion table.
 
-```select distinct medium from temporary.sessions```
+```select distinct medium from marketing.sessions```
 
 From what I saw it was not clear what Paid Impression is. I assumed that if is_paid is true and medium is 'DISPLAY' then this is Paid Impression. All other mediums with the true is_paid flag are Paid Clicks. If is_paid is false, then this is an organic channel.
 
@@ -18,10 +20,10 @@ From the conditions we know that Paid sessions are the most valuable ones and th
 
 In attribution mart I removed all sessions that have a lifespan that doesn’t include registration timestamp with the following condition in the join: 
 
-```c.registration_time between t.time_started_ts and t.time_ended_ts```
+```c.registration_time between t.time_started and t.time_ended```
 
 To define which session happened first and to choose paid session over organic or direct in case their lifespan interferes I used this function: 
 
-```row_number() over(partition by c.user_id order by session_priority,time_started_ts) as rn```
+```row_number() over(partition by user_id order by session_priority,time_started) as rn```
 
 Then we can choose all records with rn=1 and replace empty medium with ‘Other’ for registration that didn’t have live sessions.
