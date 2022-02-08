@@ -1,0 +1,32 @@
+
+version: 2
+
+sources:
+  - name: marketing
+
+    tables:
+      - name: conversions
+      - name: sessions
+
+models:
+  - name: stg_marketing__sessions
+    description: "Staging model with information about user sessions."
+    columns:
+      - name: session_id
+        description: "The surrogate primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: time_ended
+        description: "Column logic is based on attribution rules and duration of session depending on channel."
+      - name: session_priority
+        description: "Column logic is based on attribution rules and the priority each medium has."
+
+  - name: stg_marketing__conversions
+    description: "Staging model with basic conversion information"
+    columns:
+      - name: user_id
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
